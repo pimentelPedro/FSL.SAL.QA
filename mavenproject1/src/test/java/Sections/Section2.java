@@ -5,13 +5,8 @@ package Sections;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-        import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 import Login.LoginPage;
-import java.io.IOException;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,17 +14,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
  * @author NB22494
  */
-public class Section2 {
+public class Section2 extends MainSection {
 
-    private final WebDriver driver = new FirefoxDriver();
+
     LoginPage loginpage = new LoginPage(driver);
 
     public Section2() {
@@ -65,7 +58,7 @@ public class Section2 {
       //get loginPage methods
 
         //go to google page
-        loginpage.gotoGoogle();
+
         Thread.sleep(3000);
 
         WebElement acceptAnswerLink = driver.findElement(By.name("btnI"));

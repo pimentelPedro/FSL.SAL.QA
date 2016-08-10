@@ -2,34 +2,30 @@ package Sections;
 
 
 import Login.LoginPage;
-import UI_Manipulation.SeleniumUtils;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
  * @author NB22494
  */
-public class Section1 {
+public class Section1 extends MainSection{
 
-    private final WebDriver driver = new FirefoxDriver();
+
     LoginPage loginpage = new LoginPage(driver);
-    SeleniumUtils utils = new SeleniumUtils(driver);
 
     public Section1() {
-
+        
     }
 
     @BeforeClass
     public static void setUpClass() {
+        
     }
 
     @AfterClass
@@ -57,40 +53,27 @@ public class Section1 {
       //get loginPage methods
 
         //go to google page
-        loginpage.gotoGoogle();
-        Thread.sleep(3000);
+      
 
         WebElement acceptAnswerLink = driver.findElement(By.name("btnI"));
         acceptAnswerLink.click();
-        Thread.sleep(3000);
+        Thread.sleep(10000);
         driver.quit();
     }
+    
+    @Test
+    public void TC010() throws InterruptedException {
+      //get loginPage methods
 
+        //go to google page
+        
+        utils.goToFSLPortal(appConfig.Login_ValidUserName, appConfig.Login_Validpassword, "Administrator");
+
+        driver.quit();
+    }
     /**
      *
      * @throws InterruptedException
      */
-    @Test
-    public void TC002() throws InterruptedException {
-        
-        boolean enterinportal = false;
-        
-        
-        try {
-            driver.get("http://store.demoqa.com/");
-            Thread.sleep(3000);
-            WebElement acceptAnswerLink = driver.findElement(By.xpath("//div[@id='account']/a"));
-            acceptAnswerLink.click();
-            Thread.sleep(3000);
-            enterinportal = utils.goToSalPortal();
-            driver.quit();
-        } catch (Exception ex) {
-            throw new Error("O teste falhou porque: " + ex.getCause().toString() + " /n :::::: " + ex.getMessage());
 
-        } finally {
-            Assert.assertEquals("ola", "Ola");
-            Assert.assertTrue(enterinportal);
-        }
-
-    }
 }

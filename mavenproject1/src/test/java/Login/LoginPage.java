@@ -25,10 +25,7 @@ public class LoginPage {
    public void login(String username, String password){
        //vars.buttonLogin
    }
-   
-   public void gotoGoogle(){
-       _driver.get("http://www.google.pt");
-   }
+
    
     
 }
