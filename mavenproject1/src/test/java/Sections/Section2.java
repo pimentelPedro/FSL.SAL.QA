@@ -5,8 +5,13 @@ package Sections;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+        import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import Login.LoginPage;
+import java.io.IOException;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
