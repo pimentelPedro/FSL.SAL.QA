@@ -32,8 +32,6 @@ public class SeleniumUtils {
 
         driver.get(appConfig.FSL_URL);
 
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-
         driver.findElement(By.name("username")).sendKeys(username);
 
         driver.findElement(By.name("password")).sendKeys(password);

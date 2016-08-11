@@ -8,6 +8,7 @@ package Sections;
 import UI_Manipulation.SeleniumUtils;
 import org.openqa.selenium.WebDriver;
 import UI_Manipulation.AppConfig;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 /**
@@ -36,6 +37,8 @@ public abstract class MainSection {
                 this.driver = new FirefoxDriver();
                 break;
         }
+        
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         
         this.utils = new SeleniumUtils(driver);
     }
