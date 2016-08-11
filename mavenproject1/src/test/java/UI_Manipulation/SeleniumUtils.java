@@ -74,7 +74,12 @@ public class SeleniumUtils {
     }
     
     public void WaitForElementToBeClickableBySelector(By by){
-        WebDriverWait wait = new WebDriverWait(driver, 15);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.elementToBeClickable(by));
+    }
+    
+    public void WaitForElementToBeClickableByWebElement(WebElement webElement){
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 }

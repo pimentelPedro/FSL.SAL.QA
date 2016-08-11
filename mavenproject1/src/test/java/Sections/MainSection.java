@@ -38,7 +38,7 @@ public abstract class MainSection {
                 break;
         }
         
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         
         this.utils = new SeleniumUtils(driver);
     }
