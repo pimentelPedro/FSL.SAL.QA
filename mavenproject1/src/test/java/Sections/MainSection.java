@@ -13,19 +13,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 /**
  *
- * @author NB22494
+ * @author Pedro Pimentel <pedro.pimentel@celfocus.com>
+ * @author Luis Guilherme Castelo <luis.santos.castelo@celfocus.com>
  */
 public abstract class MainSection {
     
   AppConfig appConfig = new AppConfig();
     WebDriver driver;
-    SeleniumUtils utils;
-     
-     
+    SeleniumUtils utils;     
 
     public MainSection() {
         
-        switch(appConfig.DriverToUse){
+        switch(appConfig.DriverToUse) {
             case "Firefox":
                 this.driver = new FirefoxDriver();
                 break;
@@ -38,11 +37,11 @@ public abstract class MainSection {
                 break;
         }
         
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.get(appConfig.FSL_URL);
+        
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         
         this.utils = new SeleniumUtils(driver);
     }
-     
-     
            
 }

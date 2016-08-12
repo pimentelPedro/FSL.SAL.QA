@@ -9,20 +9,18 @@ import java.io.File;
 
 /**
  *
- * @author NB22494
+ * @author Pedro Pimentel <pedro.pimentel@celfocus.com>
+ * @author Luis Guilherme Castelo <luis.santos.castelo@celfocus.com>
  */
 public class AppConfig {
     public String FSL_URL = "http://10.255.33.4/fsl-login/";
     public String Login_ValidUserName="fslsit";
     public String Login_Validpassword="123456789";
     
-    
-    
-     //Change this var, to use another browser
+    // Change this var, to use another browser
     public String DriverToUse = "Firefox";
+    // public String DriverToUse = "Chrome";
     
     public String pathtoChrome = new File("src/test/java/SeleniumDrivers/chromedriver.exe").getAbsolutePath();
-    
-    
     
 }
