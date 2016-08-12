@@ -9,50 +9,87 @@ import Pages.HomePage.HomePage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  *
- * @author NB22494
+ * @author Pedro Pimentel <pedro.pimentel@celfocus.com>
+ * @author Luis Guilherme Castelo <luis.santos.castelo@celfocus.com>
  */
 public class SeleniumUtils {
-
-    public final String Login_LoginButtonXpath = "//a[contains(@id,'button-')]//span[contains(text(),'Login')]";
+    
+    // final private String Login_LoginButton = "button-1030-btnInnerEl";
+    // final private String Login_LoginButton = "button-1022-btnInnerEl";
+    
+    private String Login_LoginButton;
+    private String roleDropdownListId;
+    private String roleDropdownListUlsId;
+    
     final private AppConfig appConfig = new AppConfig();
     public final WebDriver driver;
-    private final HomePage homePage = new HomePage();
+
 
     public SeleniumUtils(WebDriver _driver) {
         this.driver = _driver;
     }
 
-    public boolean goToFSLPortal(String username, String password, String role) throws InterruptedException, Exception {
+    public boolean goToFSLPortal(String username, String password, String role) throws InterruptedException {
+        switch(appConfig.DriverToUse){
+            case "Firefox":
+                Login_LoginButton       = "button-1030-btnInnerEl";
+                roleDropdownListId      = "combo-1026-trigger-picker";
+                roleDropdownListUlsId   = "boundlist-1032-listEl";
+                break;
+            case "Chrome":
+                Login_LoginButton       = "button-1022-btnInnerEl";
+                roleDropdownListId      = "combo-1018-trigger-picker";
+                roleDropdownListUlsId   = "boundlist-1024-listEl";
+                break;
+        }
 
         driver.findElement(By.name("username")).sendKeys(username);
 
         driver.findElement(By.name("password")).sendKeys(password);
 
-        this.WaitForElementToBeDisplyedHasPretended(By.xpath(Login_LoginButtonXpath));
+        // this.WaitForElementToBeClickableBySelector(By.id(Login_LoginButton));
+        
+        this.waitForAjax();
+        
         //click login button
-        driver.findElement(By.xpath(Login_LoginButtonXpath)).click();
-
-        this.WaitForElementToBeDisplyedHasPretended(By.xpath("//div[contains(@id,'1026-triggerWrap')]/div[contains(@id,'-trigger-picker')]")); //*[@id="combo-1026-trigger-picker"]
+        driver.findElement(By.id(Login_LoginButton)).click();
+        
+        this.waitForAjax();
+        Thread.sleep(2000);
+        
         //click on dropdown button to switch role
-        driver.findElement(By.xpath("//div[contains(@id,'1026-triggerWrap')]/div[contains(@id,'-trigger-picker')]')]")).click();
+        // driver.findElement(By.id("combo-1026-trigger-picker")).click();
+        // driver.findElement(By.id("combo-1018-trigger-picker")).click();
+        driver.findElement(By.id(roleDropdownListId)).click();
+
 
         //switch role
         if (setRoleForLogin(role)) {
             Thread.sleep(3000);
             //this.WaitForElementToBeDisplyedHasPretended(By.xpath(Login_LoginButtonXpath));
             //click login button
-            driver.findElement(By.xpath(Login_LoginButtonXpath)).click();
 
-            this.WaitForElementToBeClickableBySelector(By.id(homePage.Header_SpanRoleId));
+            driver.findElement(By.id(Login_LoginButton)).click();
+            
+            //
+            HomePage homePage = new HomePage(driver);
+            
+            // this.WaitForElementToBeClickableBySelector(By.id(homePage.Header_SpanRoleId));
+            
+            // this.waitForAjax();
+            
+            if(driver.findElement(By.id(homePage.Header_SpanRoleId)).getText().equals(role)){
 
-            if (driver.findElement(By.id(homePage.Header_SpanRoleId)).getText().equals(role)) {
                 Thread.sleep(600);
                 return true;
             }
@@ -60,11 +97,14 @@ public class SeleniumUtils {
         }
 
         return false;
-
     }
 
     private boolean setRoleForLogin(String role) {
-        List<WebElement> allRoles = driver.findElement(By.xpath("boundlist-1032-listEl")).findElements(By.tagName("li"));
+
+        // List<WebElement> allRoles = driver.findElement(By.id("boundlist-1032-listEl")).findElements(By.tagName("li"));
+        // List<WebElement> allRoles = driver.findElement(By.id("boundlist-1024-listEl")).findElements(By.tagName("li"));
+        List<WebElement> allRoles = driver.findElement(By.id(roleDropdownListUlsId)).findElements(By.tagName("li"));
+
 
         for (WebElement r : allRoles) {
             if (r.getText().equals(role) == true) {
@@ -75,28 +115,45 @@ public class SeleniumUtils {
         return false;
     }
 
-    /// <summary>
-    /// Creates a temporary WebDriver to use in waits and finds where it is supposed to be faster or slower than usual 
-    /// </summary>
-    /// <param name="time">Timeout of the webdriver</param>
-    /// <returns></returns>
-    private WebDriver GetTemporaryWebDriver(long timeInSeconds) {
-        if (timeInSeconds == 0) {
-            timeInSeconds = 50;
-        }
-        WebDriver temporaryDriver = driver;
-        temporaryDriver.manage().timeouts().implicitlyWait(timeInSeconds, TimeUnit.SECONDS);
-        return temporaryDriver;
+    
+    /*
+    public void WaitForElementToBeClickableBySelector(By by){
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(by));
     }
-
-    /// <summary>
-    /// This Method allows the page to wait untill the element is displayed as pretended
-    /// </summary>
-    /// <param name="xpath">Xpath to the element</param>
-    /// <param name="visible">Pass true if you want the element to be visable, false is you want the element to be hidden</param>
-    /// <param name="enabled">Pass true if you want the element to be enabled, false is you don't</param>
-
-    public void WaitForElementToBeDisplyedHasPretended(By by) throws Exception {
+    
+    public void WaitForElementToBeClickableByWebElement(WebElement webElement){
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
+    }
+    */
+       
+    /*
+    public void waitForAjax() throws InterruptedException
+    {
+        while(true)
+        {
+            Boolean ajaxIsComplete = (Boolean) ((JavascriptExecutor)driver).executeScript("return jQuery.active == 0");
+            if(ajaxIsComplete) {
+                break;
+            }
+            
+            Thread.sleep(100);
+        }
+    }
+    */
+    
+    public void waitForAjax() throws InterruptedException {
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        
+        if((Boolean) executor.executeScript("return window.jQuery != undefined")) {
+            while(!(Boolean) executor.executeScript("return jQuery.active == 0")) {
+                Thread.sleep(1000);
+            }
+        }
+    }
+    
+      public void WaitForElementToBeDisplyedHasPretended(By by) throws Exception {
         try {
             WebDriver temporary = this.GetTemporaryWebDriver(0);
             WebDriverWait wait = new WebDriverWait(temporary, 40);
@@ -105,31 +162,4 @@ public class SeleniumUtils {
             throw new Exception("Error waiting for an Element to be has pretended, here is the XPath to It: " +"More Details: " + ex.getMessage(), ex);
         }
     }
-
-    public void WaitForElementToBeClickableBySelector(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, 40);
-
-        wait.until(ExpectedConditions.elementToBeClickable(by));
-    }
-
-    public void WaitForElementToBeClickableByWebElement(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-
-        wait.until(ExpectedConditions.elementToBeClickable(webElement));
-    }
-
-    public void WaitForElement(By by) throws InterruptedException {
-
-        boolean find = false;
-        do {
-            if (driver.findElement(by).isEnabled() && driver.findElement(by).isDisplayed()) {
-                find = true;
-            } else {
-                find = false;
-                driver.wait(1000);
-            }
-        } while (find == false);
-
-    }
-
 }

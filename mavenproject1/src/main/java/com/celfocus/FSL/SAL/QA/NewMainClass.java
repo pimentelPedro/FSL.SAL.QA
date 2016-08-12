@@ -3,7 +3,8 @@ package com.celfocus.FSL.SAL.QA;
 /**
  * @
  * @CELFOCUS
- * @author NB22494 - Pedro Pimentel | Luís Castelo
+ * @author Pedro Pimentel <pedro.pimentel@celfocus.com>
+ * @author Luis Guilherme Castelo <luis.santos.castelo@celfocus.com>
  */
 public class NewMainClass {
 
