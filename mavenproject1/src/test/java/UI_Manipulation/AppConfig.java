@@ -19,7 +19,7 @@ public class AppConfig {
     
     
      //Change this var, to use another browser
-    public String DriverToUse = "Firefox";
+    public String DriverToUse = "Chrome";
     
     public String pathtoChrome = new File("src/test/java/SeleniumDrivers/chromedriver.exe").getAbsolutePath();
     

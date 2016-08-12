@@ -37,8 +37,9 @@ public abstract class MainSection {
                 this.driver = new FirefoxDriver();
                 break;
         }
-        
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+         driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+        driver.get(appConfig.FSL_URL);
+          
         
         this.utils = new SeleniumUtils(driver);
     }
