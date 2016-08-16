@@ -73,20 +73,28 @@ public class Section1 extends MainSection {
     public void TC002() throws InterruptedException, Exception {
         String invalidCred = "";
         String unknownUser = "";
-        
+        String isClickable = "";
         
         try {
                        
             invalidCred = loginPage.InvalidLogin(appConfig.Login_ValidUserName, "olamundo", "Administrator");
             
+            driver.navigate().refresh();
+            
             unknownUser = loginPage.InvalidLogin(appConfig.Login_ValidUserName+"789456", "olamundo", "Administrator");
+
+            driver.navigate().refresh();
+                
+            isClickable = loginPage.InvalidLogin("", "", "Administrator");
             
             
             driver.quit();
         } catch (Exception ex) {
             throw new Exception("Ocorreu um erro a tentar fazer login: " + ex.getMessage());
         } finally {
-            
+            Assert.assertEquals("With invalid password!", "Invalid credentials.", invalidCred);
+            Assert.assertEquals("With invalid username!", "Unknown user.", unknownUser);
+            Assert.assertEquals("Empty password and username!", "Button disabled", isClickable);
         }
         
     }

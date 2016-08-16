@@ -37,10 +37,14 @@ public abstract class MainSection {
                 break;
         }
 
+        driver.manage().deleteAllCookies();
         
         driver.get(appConfig.FSL_URL);
         
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        
+        driver.manage().window().maximize();
+        
         
         this.utils = new SeleniumUtils(driver);
     }
